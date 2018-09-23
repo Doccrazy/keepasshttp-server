@@ -7,6 +7,8 @@
   "files": [
     "dist"
   ],
+  "author": "Matthias Piepkorn <mpiepk@gmail.com>",
+  "license": "MIT",
   "engines": {
     "node": ">=8.0.0"
   },
@@ -14,17 +16,46 @@
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist docs",
     "build": "tsc --module commonjs && typedoc --options typedoc.json",
-    "start": "ts-node src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node test/start.ts",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:prod": "npm run lint && npm run test -- --coverage --no-cache"
   },
-  "author": "Matthias Piepkorn <mpiepk@gmail.com>",
-  "license": "MIT",
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "ts-jest"
+    },
+    "testEnvironment": "node",
+    "testRegex": "(/__tests__/.*|\\.(test|spec|e2e))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/test/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 95,
+        "lines": 95,
+        "statements": 95
+      }
+    },
+    "collectCoverage": true
+  },
   "dependencies": {
     "@types/restify": "^7.2.4",
     "restify": "^7.2.1"
   },
   "devDependencies": {
+    "@types/jest": "^23.3.2",
+    "jest": "^23.6.0",
+    "keepasshttp-client": "^2.2.7",
     "rimraf": "^2.6.2",
+    "ts-jest": "^23.10.1",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "tslint-config-standard": "^8.0.1",

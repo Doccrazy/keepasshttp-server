@@ -9,6 +9,7 @@ const DEFAULT_HOST = '127.0.0.1'
 export default class RestServer {
   private readonly server: restify.Server
   private retryTimer?: NodeJS.Timer
+  private retryReject?: (reason?: any) => void
 
   /**
    * Create a new RestServer for the passed protocol. The server will initially be stopped!
@@ -44,15 +45,18 @@ export default class RestServer {
    * @return a promise that resolves once the server is up and running
    */
   listen(port?: number, host?: string): Promise<void> {
+    const listenPort = typeof port === 'undefined' ? this.protocol.defaultPort : port
+    const listenHost = host || DEFAULT_HOST
     return new Promise<void>((resolve, reject) => {
       const error = (e: any) => {
         this.server.removeListener('error', error)
         if (e.code === 'EADDRINUSE') {
+          this.retryReject = reject
           this.retryTimer = setTimeout(() => {
             this.retryTimer = undefined
             this.server.close()
             this.server.on('error', error)
-            this.server.listen(port || this.protocol.defaultPort, host || DEFAULT_HOST, success)
+            this.server.listen(listenPort, listenHost, success)
           }, 1000)
         } else {
           reject()
@@ -64,7 +68,7 @@ export default class RestServer {
       }
 
       this.server.on('error', error)
-      this.server.listen(port || this.protocol.defaultPort, host || DEFAULT_HOST, success)
+      this.server.listen(listenPort, listenHost, success)
     })
   }
 
@@ -72,11 +76,13 @@ export default class RestServer {
    * Close the server and stop accepting connections. Call listen() to start the server again.
    */
   close(): Promise<void> {
-    if (this.retryTimer) {
+    if (this.retryTimer && this.retryReject) {
       clearTimeout(this.retryTimer)
+      this.retryReject()
       this.retryTimer = undefined
+      this.retryReject = undefined
     }
-    if (!this.server.listening) {
+    if (!this.listening) {
       return Promise.resolve()
     }
     return new Promise<void>(resolve => {
@@ -88,6 +94,10 @@ export default class RestServer {
    * returns true if the server is active and accepting connections.
    */
   get listening() {
-    return this.server.listening
+    return this.server.server.listening
+  }
+
+  get port() {
+    return this.server.address().port
   }
 }
