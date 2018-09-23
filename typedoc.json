@@ -1,0 +1,14 @@
+{
+  "exclude": ["**/protocol/*.ts"],
+  "excludeExternals": true,
+  "excludeNotExported": true,
+  "excludePrivate": true,
+  "hideGenerator": true,
+  "includes": "./src",
+  "mode": "file",
+  "out": "docs",
+  "module": "commonjs",
+  "stripInternal": "true",
+  "target": "es6",
+  "theme": "minimal"
+}
