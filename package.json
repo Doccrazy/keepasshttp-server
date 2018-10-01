@@ -1,7 +1,7 @@
 {
   "name": "keepasshttp-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "A server component for the KeePassHttp protocol for NodeJS. Secret storage agnostic (not limited to KeePass), minimal dependencies.",
   "main": "dist/lib/index.js",
   "typings": "dist/types/index.d.ts",
   "files": [

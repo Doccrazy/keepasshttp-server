@@ -7,7 +7,7 @@ A server component for the [KeePassHttp](https://github.com/pfn/keepasshttp) pro
 
 ### Usage
 
-:warning: This library is targeted to developers of password managers. It does not provide any functionality on its own.
+⚠ This library is targeted to developers of password managers. It does not provide any functionality on its own.
 
 Install the package:
 ```bash
@@ -21,6 +21,7 @@ import createServer from 'keepasshttp-server'
 
 createServer(keyStore, passwordGenerator, databaseAccessor).listen();
 ```
+Checkout the [full API documentation](https://doccrazy.github.io/keepasshttp-server/) for further details.
 
 ### Features
 - Bring-your-own-backend. This component only implements the network protocol and the REST server. It does not depend on or implement any KeePass specifics.
