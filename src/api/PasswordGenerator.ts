@@ -1,7 +1,7 @@
 /**
  * Interface to secure password generator
  */
-export default interface PasswordGenerator {
+export interface PasswordGenerator {
   /**
    * Generate a password with the selected default profile
    */

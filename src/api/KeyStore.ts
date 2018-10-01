@@ -1,7 +1,7 @@
 /**
  * Handles persistent storage and retrieval of network encryption keys
  */
-export default interface KeyStore {
+export interface KeyStore {
   /**
    * Retrieve key stored for client id
    */

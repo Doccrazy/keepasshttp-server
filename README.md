@@ -15,7 +15,7 @@ npm i keepasshttp-server
 ```
 Use in your custom secret storage:
 ```js
-import createServer from 'keepasshttp-server'
+const { createServer } = require('keepasshttp-server')
 
 // implement keyStore, passwordGenerator and databaseAccessor against your backend
 

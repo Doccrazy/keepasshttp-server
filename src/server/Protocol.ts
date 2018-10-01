@@ -1,7 +1,7 @@
 /**
  * Protocol handler that responds to incoming REST requests
  */
-export default interface Protocol {
+export interface Protocol {
   readonly name: string
 
   readonly version: string

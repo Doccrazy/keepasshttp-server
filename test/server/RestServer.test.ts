@@ -1,6 +1,6 @@
 import * as http from 'http'
-import RestServer from '../../src/server/RestServer'
-import Protocol from '../../src/server/Protocol'
+import { RestServer } from '../../src/server/RestServer'
+import { Protocol } from '../../src/server/Protocol'
 import { AddressInfo } from 'net'
 import { sendTo } from '../utils'
 

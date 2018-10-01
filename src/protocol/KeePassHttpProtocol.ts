@@ -1,4 +1,4 @@
-import KeyStore from '../api/KeyStore'
+import { KeyStore } from '../api/KeyStore'
 import * as Request from './request'
 import {
   AuthenticatedResponse,
@@ -9,11 +9,11 @@ import {
   VerifiedRequest, LoginStringField
 } from './response'
 import { createVerifier, decrypt, validCipherParams } from './crypto'
-import Protocol from '../server/Protocol'
-import PasswordGenerator from '../api/PasswordGenerator'
-import DatabaseAccessor, { DatabaseEntry } from '../api/DatabaseAccessor'
+import { Protocol } from '../server/Protocol'
+import { PasswordGenerator } from '../api/PasswordGenerator'
+import { DatabaseAccessor, DatabaseEntry } from '../api/DatabaseAccessor'
 
-export default class KeePassHttpProtocol implements Protocol {
+export class KeePassHttpProtocol implements Protocol {
   constructor(
     private readonly keyStore: KeyStore,
     private readonly passwordGenerator: PasswordGenerator,

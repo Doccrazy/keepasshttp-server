@@ -1,7 +1,7 @@
 /**
  * Interface to the secret database (find or update login secrets)
  */
-export default interface DatabaseAccessor {
+export interface DatabaseAccessor {
   /**
    * Get a hex hash uniquely identifying the opened database.
    * In KeePass, this is composed of RootGroup UUid and RecycleBin UUid.

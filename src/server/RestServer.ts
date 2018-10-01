@@ -1,12 +1,12 @@
 import * as restify from 'restify'
-import Protocol from './Protocol'
+import { Protocol } from './Protocol'
 
 const DEFAULT_HOST = '127.0.0.1'
 
 /**
  * Exposes a Protocol on a TCP port
  */
-export default class RestServer {
+export class RestServer {
   public readonly server: restify.Server
   private retryTimer?: NodeJS.Timer
   private retryReject?: (reason?: any) => void

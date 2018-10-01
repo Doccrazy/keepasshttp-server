@@ -1,11 +1,11 @@
-import createServer from '../src'
-import KeyStore from '../src/api/KeyStore'
-import PasswordGenerator from '../src/api/PasswordGenerator'
-import DatabaseAccessor, { DatabaseEntry } from '../src/api/DatabaseAccessor'
+import { createServer } from '../src'
+import { KeyStore } from '../src/api/KeyStore'
+import { PasswordGenerator } from '../src/api/PasswordGenerator'
+import { DatabaseAccessor, DatabaseEntry } from '../src/api/DatabaseAccessor'
 import { KeePassHttpClient } from 'keepasshttp-client'
 import { PROTOCOL_VERSION } from '../src/protocol/request'
 import { logRequests, sendTo } from './utils'
-import RestServer from '../src/server/RestServer'
+import { RestServer } from '../src/server/RestServer'
 
 class MockStore implements KeyStore {
   private key?: Buffer
