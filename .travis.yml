@@ -7,5 +7,5 @@ node_js:
 script:
   - npm run test:prod && npm run build
 after_success:
-  - npm run report-coverage
-  - npm run deploy-docs
+  - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && npm run report-coverage
+  - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && npm run deploy-docs
