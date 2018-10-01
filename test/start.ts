@@ -1,7 +1,7 @@
-import KeyStore from '../src/api/KeyStore'
-import PasswordGenerator from '../src/api/PasswordGenerator'
-import DatabaseAccessor, { DatabaseEntry, SearchQuery } from '../src/api/DatabaseAccessor'
-import createServer from '../src'
+import { KeyStore } from '../src/api/KeyStore'
+import { PasswordGenerator } from '../src/api/PasswordGenerator'
+import { DatabaseAccessor, DatabaseEntry, SearchQuery } from '../src/api/DatabaseAccessor'
+import { createServer } from '../src'
 import { logRequests } from './utils'
 
 class MockStore implements KeyStore {
@@ -50,7 +50,7 @@ class MockDatabase implements DatabaseAccessor {
   }
 }
 
-const server = createServer(new MockStore(), new MockGenerator(), new MockDatabase());
+const server = createServer(new MockStore(), new MockGenerator(), new MockDatabase())
 server.server.on('after', logRequests)
 server.listen().then(() => {
   console.log(`KeePassHttp server listening on port ${server.port}!`)

@@ -1,5 +1,5 @@
 import * as restify from 'restify'
-import RestServer from '../src/server/RestServer'
+import { RestServer } from '../src/server/RestServer'
 import * as http from 'http'
 
 export function logRequests(req: restify.Request, resp: restify.Response) {
