@@ -1,5 +1,6 @@
 # keepasshttp-server
 
+[![NPM version](http://img.shields.io/npm/v/keepasshttp-server.svg)](https://www.npmjs.org/package/keepasshttp-server)
 [![Build Status](https://travis-ci.org/Doccrazy/keepasshttp-server.svg?branch=master)](https://travis-ci.org/Doccrazy/keepasshttp-server)
 [![Coveralls](https://img.shields.io/coveralls/Doccrazy/keepasshttp-server.svg)](https://coveralls.io/github/Doccrazy/keepasshttp-server)
 
