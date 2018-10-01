@@ -8,6 +8,10 @@
     "dist"
   ],
   "author": "Matthias Piepkorn <mpiepk@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Doccrazy/keepasshttp-server.git"
+  },
   "license": "MIT",
   "engines": {
     "node": ">=8.0.0"
@@ -19,7 +23,9 @@
     "start": "ts-node test/start.ts",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:prod": "npm run lint && npm run test -- --coverage --no-cache"
+    "test:prod": "npm run lint && npm run test -- --coverage --no-cache",
+    "deploy-docs": "ts-node tools/gh-pages-publish",
+    "report-coverage": "cat ./coverage/lcov.info | coveralls"
   },
   "jest": {
     "transform": {
@@ -52,6 +58,7 @@
   },
   "devDependencies": {
     "@types/jest": "^23.3.2",
+    "coveralls": "^3.0.2",
     "jest": "^23.6.0",
     "keepasshttp-client": "^2.2.8",
     "rimraf": "^2.6.2",
