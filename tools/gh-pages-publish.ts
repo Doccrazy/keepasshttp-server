@@ -1,6 +1,6 @@
 import { cd, echo, exec, touch } from 'shelljs'
 import { readFileSync } from 'fs'
-import url from 'url'
+import * as url from 'url'
 
 let repoUrl
 let pkg = JSON.parse(readFileSync('package.json') as any)

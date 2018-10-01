@@ -1,5 +1,8 @@
 # keepasshttp-server
 
+[![Build Status](https://travis-ci.org/Doccrazy/keepasshttp-server.svg?branch=master)](https://travis-ci.org/Doccrazy/keepasshttp-server)
+[![Coveralls](https://img.shields.io/coveralls/Doccrazy/keepasshttp-server.svg)](https://coveralls.io/github/Doccrazy/keepasshttp-server)
+
 A server component for the [KeePassHttp](https://github.com/pfn/keepasshttp) protocol for NodeJS. Secret storage agnostic (not limited to KeePass), minimal dependencies. Requires Node 8+.
 
 ### Usage
