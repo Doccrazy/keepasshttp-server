@@ -4,6 +4,7 @@ import PasswordGenerator from '../src/api/PasswordGenerator'
 import DatabaseAccessor, { DatabaseEntry } from '../src/api/DatabaseAccessor'
 import { KeePassHttpClient } from 'keepasshttp-client'
 import { PROTOCOL_VERSION } from '../src/protocol/request'
+import { logRequests } from './utils'
 
 class MockStore implements KeyStore {
   private key?: Buffer
@@ -63,6 +64,8 @@ it('handles requests from keepasshttp-client implementation', async () => {
   })
 
   const server = createServer(mockStore, mockGenerator, mockDatabase)
+  server.server.on('after', logRequests)
+
   try {
     await server.listen(0)
 

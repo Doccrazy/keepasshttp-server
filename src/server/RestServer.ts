@@ -7,7 +7,7 @@ const DEFAULT_HOST = '127.0.0.1'
  * Exposes a Protocol on a TCP port
  */
 export default class RestServer {
-  private readonly server: restify.Server
+  public readonly server: restify.Server
   private retryTimer?: NodeJS.Timer
   private retryReject?: (reason?: any) => void
 
@@ -27,9 +27,7 @@ export default class RestServer {
     this.server.use(restify.plugins.bodyParser())
 
     this.server.post('/', (req, res, next) => {
-      console.log('<- ' + JSON.stringify(req.body, null, '  '))
       return this.protocol.handle(req.body).then(response => {
-        console.log('-> ' + JSON.stringify(response, null, '  '))
         res.send(response)
         return next()
       }, next)

@@ -2,6 +2,7 @@ import KeyStore from '../src/api/KeyStore'
 import PasswordGenerator from '../src/api/PasswordGenerator'
 import DatabaseAccessor, { DatabaseEntry, SearchQuery } from '../src/api/DatabaseAccessor'
 import createServer from '../src'
+import { logRequests } from './utils'
 
 class MockStore implements KeyStore {
   private key?: Buffer
@@ -49,6 +50,8 @@ class MockDatabase implements DatabaseAccessor {
   }
 }
 
-createServer(new MockStore(), new MockGenerator(), new MockDatabase()).listen().then(() => {
-  console.log('Example app listening!')
+const server = createServer(new MockStore(), new MockGenerator(), new MockDatabase());
+server.server.on('after', logRequests)
+server.listen().then(() => {
+  console.log(`KeePassHttp server listening on port ${server.port}!`)
 }, e => console.log(e))
