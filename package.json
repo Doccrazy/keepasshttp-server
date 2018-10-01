@@ -12,6 +12,16 @@
     "type": "git",
     "url": "https://github.com/Doccrazy/keepasshttp-server.git"
   },
+  "bugs": {
+    "url": "https://github.com/Doccrazy/keepasshttp-server/issues"
+  },
+  "homepage": "https://doccrazy.github.io/keepasshttp-server/",
+  "keywords": [
+    "keepass",
+    "password",
+    "security",
+    "server"
+  ],
   "license": "MIT",
   "engines": {
     "node": ">=8.0.0"

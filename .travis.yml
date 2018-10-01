@@ -9,3 +9,13 @@ script:
 after_success:
   - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && npm run report-coverage
   - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && npm run deploy-docs
+
+deploy:
+  provider: npm
+  skip_cleanup: true
+  email: mpiepk@gmail.com
+  api_key:
+    secure: s4JObMTnYMD1ddzhNTHlcZBVIhSzMYTwrxJ3uYXx5ZsAbxmetRse0RWNBBV/nUzFhwDoQoPhoP1B0u2ZZfVtgDw2c3m9ei9rlT+XUIl1ayx18yJRcKIT4Yx8QuPtLdSwdduo1vqJ/fDd7fAnGxVskBIYtoMjbdse4zjFe5XGmeRULIut/1PMNxjeAXnWmHy+YESjeZHiUlvPSvYkagUoIdPW6e8ajlJsQM1rBvGRGc5nvceYniYH/G7if+dMYJxyBUdgWpey2HyLOXmGX69g1noiSxz4wFRxIFCASbGs8qrrUMO5+JcaK0G47IaFvsy8SaFliac6fUdhoUwWt7d0NRot2TbsgUwixPjTKSq4sTVNo/vFuDD6g33jNWdJiBwJnvBM3VfdevrgGqMr3cYknXCcBa7qQS4PhgpH7OhrJQYSC6uexnLkPkfhmYGzzNfUO5Yaj2fJy1AMTUNy0JwsOB3TaddXAFOE9rEQlWQyzPKpHi8y3b2bSaNPHw4P/rj1mS8el3YPnk41xUyGOu5hEfhb6OPo956kjt/g9eWmAOnC1B6qlj2Pkk2zpgqmS3wN3TOQy8JeRtS1YE3Np98txlNKZvZbOkL0HgKw/b4ao8SiVgvbMmLF646Jn2WBtQrueSV4iFbJlG1sZV1IjwIYoMg8ozX8YmHq262pFwmAY3g=
+  on:
+    tags: true
+    repo: Doccrazy/keepasshttp-server
