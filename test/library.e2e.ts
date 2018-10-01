@@ -4,7 +4,8 @@ import PasswordGenerator from '../src/api/PasswordGenerator'
 import DatabaseAccessor, { DatabaseEntry } from '../src/api/DatabaseAccessor'
 import { KeePassHttpClient } from 'keepasshttp-client'
 import { PROTOCOL_VERSION } from '../src/protocol/request'
-import { logRequests } from './utils'
+import { logRequests, sendTo } from './utils'
+import RestServer from '../src/server/RestServer'
 
 class MockStore implements KeyStore {
   private key?: Buffer
@@ -26,13 +27,18 @@ class MockStore implements KeyStore {
 const ID = 'Test'
 const HASH = 'd8312a59523d3c37d6a5401d3cfddd077e194680'
 
-it('handles requests from keepasshttp-client implementation', async () => {
-  const mockStore = new MockStore()
-  const mockGenerator: jest.Mocked<PasswordGenerator> = {
+let server: RestServer
+let client: KeePassHttpClient
+let mockStore: MockStore
+let mockGenerator: jest.Mocked<PasswordGenerator>
+let mockDatabase: jest.Mocked<DatabaseAccessor>
+beforeEach(async () => {
+  mockStore = new MockStore()
+  mockGenerator = {
     generate: jest.fn(),
     estimateQualityBits: jest.fn()
   }
-  const mockDatabase: jest.Mocked<DatabaseAccessor> = {
+  mockDatabase = {
     getHash: jest.fn(),
     search: jest.fn(),
     create: jest.fn(),
@@ -63,16 +69,28 @@ it('handles requests from keepasshttp-client implementation', async () => {
     }
   })
 
-  const server = createServer(mockStore, mockGenerator, mockDatabase)
+  server = createServer(mockStore, mockGenerator, mockDatabase)
   server.server.on('after', logRequests)
 
-  try {
-    await server.listen(0)
+  await server.listen(0)
+
+  client = new KeePassHttpClient({ url: `http://localhost:${server.port}` })
+})
+
+afterEach(async () => {
+  await server.close()
+})
+
+describe('associate tests against keepasshttp-client implementation', () => {
+  test('invalid testAssociate requests', async () => {
+    const invalidClient = new KeePassHttpClient({ url: `http://localhost:${server.port}`, keyId: { key: '5f9WZ7t+9vExvJoV0TNewgvCMrhUospVyPvBllXjutE=', id: 'Invalid' } })
+    await expect(invalidClient.testAssociate()).rejects.toBeDefined()
 
     const client = new KeePassHttpClient({ url: `http://localhost:${server.port}` })
-
     await expect(client.testAssociate()).rejects.toBeDefined()
+  })
 
+  test('valid associte requests', async () => {
     await client.associate()
     expect(client.key).toBeDefined()
     expect(client.id).toBe('Test')
@@ -80,7 +98,14 @@ it('handles requests from keepasshttp-client implementation', async () => {
     const testAss2 = await client.testAssociate()
     expect(testAss2.Success).toBeTruthy()
     expect(testAss2.Version).toBe(PROTOCOL_VERSION)
+  })
+})
+describe('fully authenticated tests against keepasshttp-client implementation', () => {
+  beforeEach(async () => {
+    await client.associate()
+  })
 
+  test('getLogins', async () => {
     const records = await client.getLogins({ url: 'http://domain.com' })
     expect(records.Id).toBe(ID)
     expect(records.Hash).toBe(HASH)
@@ -102,7 +127,9 @@ it('handles requests from keepasshttp-client implementation', async () => {
     const records2 = await client.getLogins({ url: 'http://example.com' })
     expect(records2.Count).toBe(0)
     expect(records2.Entries).toHaveLength(0)
+  })
 
+  test('getLoginsCount', async () => {
     const count = await client.getLoginsCount({ url: 'http://domain.com' })
     expect(count.Count).toBe(2)
     expect(count.Entries).toBeFalsy()
@@ -110,12 +137,17 @@ it('handles requests from keepasshttp-client implementation', async () => {
     const count2 = await client.getLoginsCount({ url: 'http://example.com' })
     expect(count2.Count).toBe(0)
     expect(count2.Entries).toBeFalsy()
+  })
 
-    await client.createLogin({ url: 'http://example.com', login: 'exampleUser', password: 'examplePass' })
-    expect(mockDatabase.create).toBeCalledWith('http://example.com', 'exampleUser', 'examplePass', null, null)
+  test('createLogin', async () => {
+    expect(client.createLogin({ url: '', login: '', password: '' })).rejects.toBeDefined()
+
+    await client.createLogin({ url: 'http://example.com', login: 'exampleUser', password: 'examplePass', submitUrl: 'http://example.com/submit' })
+    expect(mockDatabase.create).toBeCalledWith('http://example.com', 'exampleUser', 'examplePass', 'http://example.com/submit', null)
+  })
+
+  test('updateLogin', async () => {
     await client.updateLogin({ uuid: 'uuid', url: 'http://example.com', login: 'exampleUser', password: 'examplePass' })
     expect(mockDatabase.update).toBeCalledWith('uuid', 'exampleUser', 'examplePass')
-  } finally {
-    await server.close()
-  }
+  })
 })

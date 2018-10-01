@@ -2,6 +2,7 @@ import * as http from 'http'
 import RestServer from '../../src/server/RestServer'
 import Protocol from '../../src/server/Protocol'
 import { AddressInfo } from 'net'
+import { sendTo } from '../utils'
 
 let mockProtocol: Protocol & { handle: jest.MockInstance<Protocol['handle']> }
 beforeEach(() => {
@@ -84,20 +85,3 @@ describe('RestServer test', () => {
     }
   })
 })
-
-async function sendTo(server: RestServer, data: any) {
-  return new Promise<string>((resolve, reject) => {
-    let body = ''
-    const request = http.request({ host: 'localhost', port: server.port, method: 'POST', headers: { 'Content-Type': 'application/json' }, timeout: 2000 }, res => {
-      res.setEncoding('utf8')
-      res.on('data', chunk => {
-        body += chunk
-      })
-      res.on('close', () => {
-        return resolve(body ? JSON.parse(body) : '')
-      })
-    })
-    request.on('error', reject)
-    request.end(data ? JSON.stringify(data) : '')
-  })
-}
