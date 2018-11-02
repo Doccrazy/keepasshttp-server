@@ -122,6 +122,7 @@ describe('fully authenticated tests against keepasshttp-client implementation', 
     expect(records.Entries[0].StringFields[0].Key).toBe('field1')
     // @ts-ignore
     expect(records.Entries[0].StringFields[0].Value).toBe('value1')
+    // @ts-ignore
     expect(records.Entries[1].Login).toBe('user2')
 
     const records2 = await client.getLogins({ url: 'http://example.com' })
